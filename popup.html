@@ -28,7 +28,57 @@
         <!-- Results will be populated here -->
       </div>
       
-      <button id="back-button" class="secondary-button">Scan Again</button>
+      <div class="button-row">
+        <button id="back-button" class="secondary-button">Scan Again</button>
+        <button id="feedback-button" class="primary-button">Give Feedback</button>
+      </div>
+    </div>
+    
+    <!-- New Feedback View -->
+    <div id="feedback-view" class="hidden">
+      <h2>Your Feedback</h2>
+      <p class="feedback-intro">Your feedback helps us improve dark pattern detection and understand user awareness.</p>
+      
+      <div class="feedback-question">
+        <p>Was this extension helpful in identifying dark patterns?</p>
+        <div class="feedback-options">
+          <button class="feedback-option-btn" data-value="yes">Yes</button>
+          <button class="feedback-option-btn" data-value="somewhat">Somewhat</button>
+          <button class="feedback-option-btn" data-value="no">No</button>
+        </div>
+      </div>
+
+      <div class="feedback-question">
+        <p>Enter your name:</p>
+        <textarea id="feedback-name" placeholder="Your name..."></textarea>
+      </div>
+      
+      <div class="feedback-question">
+        <p>Any additional comments?</p>
+        <textarea id="feedback-comments" placeholder="Your thoughts about the extension..."></textarea>
+      </div>
+      
+      <div class="feedback-actions">
+        <button id="submit-feedback" class="primary-button">Submit Feedback</button>
+        <button id="skip-feedback" class="secondary-button">Skip</button>
+      </div>
+    </div>
+    
+    <!-- Thank You View -->
+    <div id="thank-you-view" class="hidden">
+      <div class="thank-you-content">
+        <h2>Thank You!</h2>
+        <p>Your feedback helps us improve dark pattern detection.</p>
+        <button id="back-to-home" class="primary-button">Back to Home</button>
+        
+        <div class="export-section">
+          <p>Export feedback data:</p>
+          <div class="export-buttons">
+            <button id="export-json" class="export-btn">JSON</button>
+            <button id="export-csv" class="export-btn">CSV</button>
+          </div>
+        </div>
+      </div>
     </div>
     
     <div class="info-section">
@@ -37,6 +87,7 @@
     </div>
   </div>
   
+  <script src="feedback-utils.js"></script>
   <script src="popup.js"></script>
 </body>
 </html> 

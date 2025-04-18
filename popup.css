@@ -218,4 +218,221 @@ h1 {
   margin-top: 10px;
   font-size: 14px;
   text-align: center;
+}
+
+/* Feedback Components */
+.feedback-buttons {
+  display: flex;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.thumbs-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumbs-btn:hover {
+  background-color: #f1f2f6;
+}
+
+.thumbs-up {
+  color: #0984e3;
+}
+
+.thumbs-down {
+  color: #e74c3c;
+}
+
+.thumbs-btn.selected {
+  background-color: #f1f2f6;
+  transform: scale(1.1);
+}
+
+.feedback-question {
+  margin-bottom: 20px;
+}
+
+.feedback-question p {
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.feedback-options {
+  display: flex;
+  gap: 10px;
+}
+
+.feedback-option-btn {
+  padding: 8px 16px;
+  background-color: #f1f2f6;
+  border: 1px solid #dfe4ea;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.feedback-option-btn:hover {
+  background-color: #dfe6e9;
+}
+
+.feedback-option-btn.selected {
+  background-color: #0984e3;
+  color: white;
+  border-color: #0984e3;
+}
+
+#feedback-name {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #dfe4ea;
+  border-radius: 4px;
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+#feedback-comments {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #dfe4ea;
+  border-radius: 4px;
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.feedback-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.feedback-intro {
+  color: #636e72;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.button-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.button-row .secondary-button, 
+.button-row .primary-button {
+  flex: 1;
+  margin: 10px 0;
+}
+
+.thank-you-content {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.thank-you-content h2 {
+  color: #0984e3;
+  margin-bottom: 15px;
+}
+
+.export-section {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #dfe4ea;
+}
+
+.export-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.export-btn {
+  padding: 6px 15px;
+  background-color: #f1f2f6;
+  border: 1px solid #dfe4ea;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.export-btn:hover {
+  background-color: #dfe6e9;
+}
+
+.feedback-label {
+  display: block;
+  margin-top: 6px;
+  color: #636e72;
+  font-size: 12px;
+  text-align: center;
+}
+
+h2 {
+  color: #2d3436;
+  font-size: 20px;
+  margin: 10px 0;
+}
+
+/* Pattern Feedback at the pattern item level */
+.pattern-feedback {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #f1f2f6;
+}
+
+.pattern-feedback span {
+  color: #636e72;
+  font-size: 13px;
+  margin-right: 10px;
+}
+
+.pulse-animation {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(9, 132, 227, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(9, 132, 227, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(9, 132, 227, 0);
+  }
+}
+
+.export-message {
+  margin-top: 15px;
+  padding: 8px;
+  background-color: #def7ec;
+  color: #007f5f;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Error message styling */
+.error-message {
+  margin: 10px 0;
+  padding: 8px 12px;
+  background-color: #fcebeb;
+  color: #e74c3c;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
 } 

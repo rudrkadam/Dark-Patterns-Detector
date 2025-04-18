@@ -46,6 +46,38 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
     return true; // Keep the message channel open for async response
   }
+  
+  // Handle feedback storage request from content script
+  if (request.action === 'storeFeedback' && request.feedbackType === 'pattern') {
+    console.log('Background script received feedback storage request');
+    
+    // Get existing feedback
+    chrome.storage.local.get(['patternFeedback'], (data) => {
+      const patternFeedback = data.patternFeedback || [];
+      
+      // Create new feedback entry
+      const feedback = {
+        patternIndex: request.patternIndex,
+        patternType: request.patternType,
+        wasAware: request.wasAware,
+        pageUrl: request.pageUrl,
+        timestamp: new Date().toISOString()
+      };
+      
+      // Add to existing feedback
+      patternFeedback.push(feedback);
+      
+      // Store updated feedback
+      chrome.storage.local.set({ patternFeedback }, () => {
+        console.log('Pattern feedback stored successfully');
+        if (sendResponse) {
+          sendResponse({ success: true });
+        }
+      });
+    });
+    
+    return true; // Keep the message channel open for async response
+  }
 });
 
 async function analyzeWithGemini(content) {

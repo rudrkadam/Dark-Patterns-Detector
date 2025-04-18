@@ -4,6 +4,20 @@ All notable changes to the Dark Patterns Detector extension will be documented i
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2025-04-20
+### Added
+- User feedback system to collect data on dark pattern awareness
+- Thumbs up/down buttons for each detected dark pattern to indicate if users were aware of them
+- Overall extension helpfulness feedback form
+- Export functionality for feedback data (JSON and CSV formats)
+- Added downloads permission to enable exporting feedback data
+- New utilities for managing and storing feedback data
+
+### Changed
+- Updated UI to include feedback options
+- Enhanced tooltip functionality to include feedback collection
+- Reorganized popup UI to accommodate feedback button
+
 ## [1.0.0] - 2025-04-18
 ### Added
 - Initial release of the Dark Patterns Detector extension

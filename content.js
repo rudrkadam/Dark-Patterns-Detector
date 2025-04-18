@@ -119,6 +119,14 @@ function highlightDarkPattern(pattern, index) {
       </div>
       <div class="tooltip-content hidden">
         <p>${pattern.description}</p>
+        <div class="tooltip-feedback">
+          <span>Were you aware of this pattern?</span>
+          <div class="tooltip-feedback-buttons">
+            <button class="tooltip-thumbs-btn tooltip-thumbs-up" data-index="${index}" data-aware="true" title="Yes, I was aware">👍</button>
+            <button class="tooltip-thumbs-btn tooltip-thumbs-down" data-index="${index}" data-aware="false" title="No, I wasn't aware">👎</button>
+          </div>
+          <div class="tooltip-feedback-thanks hidden">Thanks for your feedback!</div>
+        </div>
       </div>
     `;
     
@@ -131,6 +139,37 @@ function highlightDarkPattern(pattern, index) {
       const content = tooltip.querySelector('.tooltip-content');
       content.classList.toggle('hidden');
       e.target.textContent = content.classList.contains('hidden') ? 'More' : 'Less';
+    });
+    
+    // Add event listeners for feedback buttons
+    tooltip.querySelectorAll('.tooltip-thumbs-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        
+        // Get pattern info and feedback
+        const patternIndex = btn.dataset.index;
+        const wasAware = btn.dataset.aware === 'true';
+        
+        // Disable both buttons
+        tooltip.querySelectorAll('.tooltip-thumbs-btn').forEach(b => {
+          b.disabled = true;
+          b.style.opacity = 0.5;
+        });
+        
+        // Show thanks message
+        const thanksMsg = tooltip.querySelector('.tooltip-feedback-thanks');
+        thanksMsg.classList.remove('hidden');
+        
+        // Store feedback in extension storage
+        chrome.runtime.sendMessage({
+          action: 'storeFeedback',
+          feedbackType: 'pattern',
+          patternIndex: patternIndex,
+          patternType: pattern.type,
+          wasAware: wasAware,
+          pageUrl: window.location.href
+        });
+      });
     });
     
     // Scroll element into view

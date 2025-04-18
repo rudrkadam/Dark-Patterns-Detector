@@ -72,6 +72,55 @@
   display: none !important;
 }
 
+/* Tooltip feedback styles */
+.tooltip-feedback {
+  margin-top: 10px !important;
+  padding-top: 8px !important;
+  border-top: 1px solid #eee !important;
+}
+
+.tooltip-feedback span {
+  display: block !important;
+  font-size: 12px !important;
+  color: #636e72 !important;
+  margin-bottom: 5px !important;
+}
+
+.tooltip-feedback-buttons {
+  display: flex !important;
+  gap: 10px !important;
+}
+
+.tooltip-thumbs-btn {
+  background: none !important;
+  border: none !important;
+  font-size: 16px !important;
+  cursor: pointer !important;
+  padding: 4px 8px !important;
+  border-radius: 4px !important;
+  transition: all 0.2s !important;
+}
+
+.tooltip-thumbs-btn:hover {
+  background-color: #f1f2f6 !important;
+  transform: scale(1.1) !important;
+}
+
+.tooltip-thumbs-up {
+  color: #0984e3 !important;
+}
+
+.tooltip-thumbs-down {
+  color: #e74c3c !important;
+}
+
+.tooltip-feedback-thanks {
+  margin-top: 5px !important;
+  font-size: 11px !important;
+  color: #00b894 !important;
+  font-style: italic !important;
+}
+
 .dark-pattern-notification {
   position: fixed !important;
   top: 20px !important;
