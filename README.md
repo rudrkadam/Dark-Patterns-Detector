@@ -19,10 +19,12 @@ A browser extension that automatically detects dark patterns on any webpage you 
 3. Enable "Developer mode" in the top-right corner
 4. Click "Load unpacked" and select the extension directory
 
-### Before Using
+### API Key Setup
 
-1. Open `popup.js` and replace `YOUR_GEMINI_API_KEY` with your actual Gemini API key
-   - Get a Gemini API key from the [Google AI Studio](https://makersuite.google.com/app/apikey)
+1. Copy `config.template.js` to `config.js`
+2. Obtain a Gemini API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+3. Replace `YOUR_GEMINI_API_KEY_HERE` in `config.js` with your actual API key
+4. The API key is stored locally and NOT shared when you commit code to GitHub
 
 ## Usage
 

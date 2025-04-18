@@ -4,6 +4,9 @@ npm-debug.log
 yarn-error.log
 package-lock.json
 
+# API Keys - Keep sensitive keys private
+config.js
+
 # Backup files
 *.zip
 *.bak

@@ -1,5 +1,35 @@
-// Gemini API configuration
-const GEMINI_API_KEY = 'AIzaSyCq2m5w35GrRxba-cuPIpLJb9UWS1ngAlQ'; // Use your own key from https://makersuite.google.com/app/apikey
+// Configuration variable to store API keys
+let CONFIG = {
+  GEMINI_API_KEY: null
+};
+
+// Load configuration at startup
+loadConfig().then(() => {
+  console.log('Configuration loaded');
+}).catch(error => {
+  console.error('Error loading configuration:', error);
+});
+
+// Function to load config
+async function loadConfig() {
+  try {
+    const configUrl = chrome.runtime.getURL('config.js');
+    const response = await fetch(configUrl);
+    const configText = await response.text();
+    
+    // Extract the API key using regex - safer than eval
+    const keyMatch = configText.match(/GEMINI_API_KEY:\s*['"]([^'"]+)['"]/);
+    if (keyMatch && keyMatch[1]) {
+      CONFIG.GEMINI_API_KEY = keyMatch[1];
+      console.log('API key loaded successfully');
+    } else {
+      console.error('API key not found in config.js');
+    }
+  } catch (error) {
+    console.error('Error loading config.js:', error);
+    throw error;
+  }
+}
 
 // Listen for messages from content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -20,6 +50,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 async function analyzeWithGemini(content) {
   try {
+    // Check if API key is available
+    if (!CONFIG.GEMINI_API_KEY) {
+      throw new Error('Gemini API key not found. Please check your config.js file.');
+    }
+
     const prompt = `Analyze this webpage content for dark patterns. For each dark pattern found, provide:
 1. The exact text where the dark pattern appears
 2. The type of dark pattern
@@ -42,7 +77,7 @@ ${content}`;
 
     console.log('Sending request to Gemini API');
     
-    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_API_KEY, {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + CONFIG.GEMINI_API_KEY, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
