@@ -1,0 +1,25 @@
+{
+  "name": "dark-patterns-detector",
+  "version": "1.0.0",
+  "description": "Browser extension that automatically detects dark patterns on webpages",
+  "private": true,
+  "scripts": {
+    "bump": "node version-bump.js",
+    "backup": "node create-backup.js",
+    "bump-patch": "node version-bump.js patch",
+    "bump-minor": "node version-bump.js minor",
+    "bump-major": "node version-bump.js major"
+  },
+  "keywords": [
+    "dark-patterns",
+    "browser-extension",
+    "chrome-extension",
+    "web-accessibility",
+    "ai"
+  ],
+  "author": "BE IT Engineering Student",
+  "license": "MIT",
+  "devDependencies": {
+    "archiver": "^5.3.1"
+  }
+} 

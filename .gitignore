@@ -1,0 +1,29 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Backup files
+*.zip
+*.bak
+
+# OS specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE/Editor specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Chrome/Extension specific
+*.crx
+*.pem
+.env
+
+# Temporary files
+tmp/
+temp/ 

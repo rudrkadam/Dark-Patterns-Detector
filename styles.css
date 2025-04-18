@@ -1,0 +1,104 @@
+/* Dark pattern highlight styles */
+.dark-pattern-highlight {
+  background-color: rgba(255, 235, 59, 0.5) !important;
+  border: 2px solid #ea4335 !important;
+  border-radius: 4px !important;
+  position: relative !important;
+  cursor: pointer !important;
+  transition: background-color 0.3s ease !important;
+}
+
+.dark-pattern-highlight:hover {
+  background-color: rgba(255, 235, 59, 0.7) !important;
+}
+
+.dark-pattern-tooltip {
+  display: none;
+  position: absolute !important;
+  top: -10px !important;
+  left: 50% !important;
+  transform: translate(-50%, -100%) !important;
+  background: white !important;
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+  z-index: 999999 !important;
+  min-width: 200px !important;
+  max-width: 300px !important;
+  font-family: 'Segoe UI', Arial, sans-serif !important;
+}
+
+.dark-pattern-highlight:hover .dark-pattern-tooltip {
+  display: block !important;
+}
+
+.tooltip-header {
+  background: #0984e3 !important;
+  color: white !important;
+  padding: 8px 12px !important;
+  border-radius: 4px 4px 0 0 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.tooltip-header strong {
+  margin: 0 !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
+}
+
+.tooltip-more-btn {
+  background-color: white !important;
+  color: #0984e3 !important;
+  border: none !important;
+  border-radius: 3px !important;
+  padding: 2px 6px !important;
+  font-size: 10px !important;
+  cursor: pointer !important;
+  font-weight: bold !important;
+}
+
+.tooltip-content {
+  padding: 8px 12px !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  color: #333 !important;
+  max-height: 150px !important;
+  overflow-y: auto !important;
+}
+
+.tooltip-content.hidden {
+  display: none !important;
+}
+
+.dark-pattern-notification {
+  position: fixed !important;
+  top: 20px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  background-color: white !important;
+  border: 1px solid #0984e3 !important;
+  border-radius: 4px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  padding: 10px 15px !important;
+  z-index: 100000 !important;
+  font-family: 'Segoe UI', Arial, sans-serif !important;
+  font-size: 14px !important;
+  color: #333 !important;
+  animation: fadeIn 0.3s ease-out, fadeOut 0.3s ease-in 2.7s forwards !important;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.hidden {
+  display: none !important;
+} 

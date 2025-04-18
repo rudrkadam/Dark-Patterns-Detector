@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dark Patterns Detector</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Dark Patterns Detector</h1>
+    
+    <div id="initial-view">
+      <button id="scan-button" class="primary-button">Scan This Page</button>
+      <div class="loading" id="loading-spinner">
+        <div class="loading-spinner"></div>
+        <p>Scanning page for dark patterns...</p>
+      </div>
+    </div>
+    
+    <div id="results-view" class="hidden">
+      <div class="pattern-count">
+        <span id="pattern-count">0</span> dark patterns found
+      </div>
+      
+      <button id="highlight-all" class="highlight-all-button">Highlight All</button>
+      
+      <div id="patterns-list" class="results-container">
+        <!-- Results will be populated here -->
+      </div>
+      
+      <button id="back-button" class="secondary-button">Scan Again</button>
+    </div>
+    
+    <div class="info-section">
+      <p>Dark patterns are design tricks used to manipulate users into doing things they might not want to do.</p>
+      <a href="https://www.deceptive.design/" target="_blank" class="learn-more-link">Learn more about dark patterns</a>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html> 
