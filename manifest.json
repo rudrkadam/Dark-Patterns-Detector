@@ -1,16 +1,26 @@
 {
   "manifest_version": 3,
   "name": "Dark Patterns Detector",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Automatically detect dark patterns on any webpage",
-  "permissions": ["activeTab", "scripting", "storage", "downloads"],
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "downloads"
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "web_accessible_resources": [
     {
-      "resources": ["config.js", "feedback-utils.js"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "config.js",
+        "feedback-utils.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ],
   "action": {
@@ -28,9 +38,15 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"],
-      "css": ["styles.css"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "styles.css"
+      ]
     }
   ]
-} 
+}

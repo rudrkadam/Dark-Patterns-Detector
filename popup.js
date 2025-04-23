@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const backToHome = document.getElementById('back-to-home');
   const exportJson = document.getElementById('export-json');
   const exportCsv = document.getElementById('export-csv');
+  const downloadAllFeedback = document.getElementById('download-all-feedback');
 
   // Variables for tracking
   let currentUrl = '';
@@ -351,6 +352,18 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(error => {
         console.error('Export error:', error);
         showError("Failed to export data. Please try again.");
+      });
+  });
+  
+  // Download all feedback button handler
+  downloadAllFeedback.addEventListener('click', () => {
+    exportFeedbackToCsv()
+      .then(() => {
+        showTemporaryMessage('Feedback data downloaded successfully!');
+      })
+      .catch((error) => {
+        console.error('Error exporting feedback:', error);
+        showError('Failed to download feedback data.');
       });
   });
   

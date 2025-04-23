@@ -4,6 +4,15 @@ All notable changes to the Dark Patterns Detector extension will be documented i
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2025-04-23
+### Added
+- Added "Download All Feedback" button at the bottom of the popup for easy access to feedback data
+- Added ability to download feedback in CSV format directly from the main popup
+
+### Changed
+- Fixed loading spinner behavior to not show "Scanning page for dark patterns..." when the extension is first opened
+- Improved UX by only showing loading spinner after user clicks "Scan This Page"
+
 ## [2.0.0] - 2025-04-20
 ### Added
 - User feedback system to collect data on dark pattern awareness
