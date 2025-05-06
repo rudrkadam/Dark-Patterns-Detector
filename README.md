@@ -1,14 +1,10 @@
 ![Dark Patterns Detector](Title.png)
 
----
-
 # Dark Patterns Detector
 
 A browser extension that automatically detects dark patterns on any webpage you visit. Dark patterns are deceptive design practices that manipulate users into doing things they might not otherwise do.
 
 Learn more about dark patterns on [Deceptive Design](https://www.deceptive.design/). 
-
----
 
 ## ✨ Features
 
@@ -17,8 +13,6 @@ Learn more about dark patterns on [Deceptive Design](https://www.deceptive.desig
 - **Highlighting**: Highlight specific dark patterns or all patterns at once
 - **Informative Tooltips**: View descriptions of each dark pattern and how it affects users
 - **Educational Resource**: Links to more information about dark patterns
-
----
 
 ## 🔧 Installation
 
@@ -36,8 +30,6 @@ Learn more about dark patterns on [Deceptive Design](https://www.deceptive.desig
 3. Replace `YOUR_GEMINI_API_KEY_HERE` in `config.js` with your actual API key
 4. The API key is stored locally and NOT shared when you commit code to GitHub
 
----
-
 ## 📋 Usage
 
 1. Click on the extension icon in your browser toolbar
@@ -46,8 +38,6 @@ Learn more about dark patterns on [Deceptive Design](https://www.deceptive.desig
 4. Use the "Highlight" buttons to visually identify dark patterns on the page
 5. Click "Highlight All" to show all detected patterns at once
 6. Hover over highlighted sections to see information about the dark pattern
-
----
 
 ## 🔄 Version Management
 
@@ -84,16 +74,12 @@ If you need to roll back to a previous version:
 
 See the [CHANGELOG.md](CHANGELOG.md) file for a detailed version history.
 
----
-
 ## 🛠️ Technical Implementation
 
 - **Popup Interface**: HTML/CSS/JavaScript that provides the user interface
 - **Content Script**: Handles DOM manipulation and highlighting
 - **AI Integration**: Sends page content to Gemini API for dark pattern detection
 - **Storage**: Saves detection results between page refreshes
-
----
 
 ## 🎓 Project Purpose
 
@@ -102,8 +88,6 @@ This extension was developed as a **Final Year (Capstone) project** for the Bach
 2. [Mugdha Kulkarni](https://www.linkedin.com/in/mugdha-kulkarni-243752229/)
 3. [Diya Oswal](https://www.linkedin.com/in/diya-oswal-74b003226/)
 4. [Gargi Meshram](https://www.linkedin.com/in/gargi-meshram-3b0932251/)
-
----
 
 ## 📄 License
 
