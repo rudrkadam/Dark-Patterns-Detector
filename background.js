@@ -1,3 +1,13 @@
+/*
+ * This file is the main background script for the extension.
+ * It handles the communication with the Gemini API for dark pattern detection.
+ *
+ * 1. It loads configuration including the API key from config.js.
+ * 2. It receives page content from the content script and sends it to the Gemini API for analysis.
+ * 3. It processes and formats the API response before sending it back to the popup.
+ * 4. It handles storage of user feedback data received from the content script.
+ */
+
 // Configuration variable to store API keys
 let CONFIG = {
   GEMINI_API_KEY: null

@@ -1,3 +1,19 @@
+/*
+ * This file is the content script that runs in the context of web pages.
+ * It handles manipulation of the web page DOM to detect and highlight dark patterns.
+ *
+ * 1. It extracts page content and sends it to the background script for analysis.
+ * 2. It provides sophisticated element targeting with multiple fallback strategies:
+ *    - Exact text matching
+ *    - Selector-based targeting
+ *    - Partial text matching with phrases
+ *    - Keyword matching from descriptions
+ *    - Fuzzy matching as a last resort
+ * 3. It adds interactive tooltips to highlighted elements with pattern information.
+ * 4. It manages user feedback collection directly from the page via the tooltips.
+ * 5. It handles highlight removal and notification displays for user interactions.
+ */
+
 // Store elements for later highlighting
 let pageElements = new Map();
 let highlightedElements = [];

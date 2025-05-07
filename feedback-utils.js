@@ -1,7 +1,11 @@
-/**
- * Feedback Utilities for Dark Patterns Detector
- * 
- * This file contains utilities for handling user feedback data
+/*
+ * This file contains utility functions for handling user feedback in the extension.
+ * It manages the storage and export of user feedback data.
+ *
+ * 1. It provides functions to store pattern-specific feedback from users.
+ * 2. It handles storage of overall extension helpfulness feedback.
+ * 3. It implements export functionality for feedback data in JSON and CSV formats.
+ * 4. It offers utilities to retrieve and clear all feedback data from storage.
  */
 
 // Store a feedback instance for a specific pattern
