@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Dark Patterns Detector</title>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="popup.css">
 </head>
+
 <body>
   <div class="container">
     <h1>Dark Patterns Detector</h1>
-    
+
+    <!-- Initial View -->
     <div id="initial-view">
       <button id="scan-button" class="primary-button">Scan This Page</button>
       <div class="loading" id="loading-spinner" style="display: none;">
@@ -16,29 +19,30 @@
         <p>Scanning page for dark patterns...</p>
       </div>
     </div>
-    
+
+    <!-- Results View -->
     <div id="results-view" class="hidden">
       <div class="pattern-count">
         <span id="pattern-count">0</span> dark patterns found
       </div>
-      
+
       <button id="highlight-all" class="highlight-all-button">Highlight All</button>
-      
+
       <div id="patterns-list" class="results-container">
         <!-- Results will be populated here -->
       </div>
-      
+
       <div class="button-row">
         <button id="back-button" class="secondary-button">Scan Again</button>
         <button id="feedback-button" class="primary-button">Give Feedback</button>
       </div>
     </div>
-    
+
     <!-- New Feedback View -->
     <div id="feedback-view" class="hidden">
       <h2>Your Feedback</h2>
       <p class="feedback-intro">Your feedback helps us improve dark pattern detection and understand user awareness.</p>
-      
+
       <div class="feedback-question">
         <p>Was this extension helpful in identifying dark patterns?</p>
         <div class="feedback-options">
@@ -52,25 +56,25 @@
         <p>Enter your name:</p>
         <textarea id="feedback-name" placeholder="Your name..."></textarea>
       </div>
-      
+
       <div class="feedback-question">
-        <p>Any additional comments?</p>
+        <p>Any additional comments / feedback:</p>
         <textarea id="feedback-comments" placeholder="Your thoughts about the extension..."></textarea>
       </div>
-      
+
       <div class="feedback-actions">
         <button id="submit-feedback" class="primary-button">Submit Feedback</button>
         <button id="skip-feedback" class="secondary-button">Skip</button>
       </div>
     </div>
-    
+
     <!-- Thank You View -->
     <div id="thank-you-view" class="hidden">
       <div class="thank-you-content">
         <h2>Thank You!</h2>
-        <p>Your feedback helps us improve dark pattern detection.</p>
+        <p>Your feedback helps us improve dark pattern detection and understand user awareness.</p>
         <button id="back-to-home" class="primary-button">Back to Home</button>
-        
+
         <div class="export-section">
           <p>Export feedback data:</p>
           <div class="export-buttons">
@@ -80,15 +84,18 @@
         </div>
       </div>
     </div>
-    
+
+    <!-- Info Section -->
     <div class="info-section">
       <p>Dark patterns are design tricks used to manipulate users into doing things they might not want to do.</p>
       <a href="https://www.deceptive.design/" target="_blank" class="learn-more-link">Learn more about dark patterns</a>
       <button id="download-all-feedback" class="download-feedback-btn">Download All Feedback</button>
     </div>
   </div>
-  
+
+  <!-- Scripts -->
   <script src="feedback-utils.js"></script>
   <script src="popup.js"></script>
 </body>
-</html> 
+
+</html>
