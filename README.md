@@ -2,7 +2,7 @@
 
 # Dark Patterns Detector
 
-A browser extension that automatically detects dark patterns on any webpage you visit. Dark patterns are deceptive design practices that manipulate users into doing things they might not otherwise do.
+A Chromium browser extension that automatically detects dark patterns on any webpage you visit using a Large Language Model (LLM). Dark patterns are deceptive design practices that manipulate users into doing things they might not otherwise do.
 
 Learn more about dark patterns on [Deceptive Design](https://www.deceptive.design/). 
 
