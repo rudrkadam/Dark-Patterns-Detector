@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Dark Patterns Detector",
   "version": "2.1.0",
-  "description": "Automatically detect dark patterns on any webpage",
+  "description": "Browser extension that automatically detects dark patterns on webpages",
   "permissions": [
     "activeTab",
     "scripting",
