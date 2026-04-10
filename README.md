@@ -89,6 +89,9 @@ This extension was developed as a **Final Year (Capstone) project** for the Bach
 3. [Diya Oswal](https://www.linkedin.com/in/diya-oswal-74b003226/)
 4. [Gargi Meshram](https://www.linkedin.com/in/gargi-meshram-3b0932251/)
 
+- This research was presented at [ICTIS 2026 ](https://ictisthailand.com/) on 10th of April 2026. 
+- You can view the presentation [here](https://docs.google.com/presentation/d/1oiNMNfWHm4qANeMR_wFwiYmeluyKcEBR/edit?usp=sharing&ouid=113386920571018637509&rtpof=true&sd=true).
+
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
