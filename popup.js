@@ -66,7 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
         { action: 'getPageContent' },
         (response) => {
           if (chrome.runtime.lastError) {
-            // If content script isn't ready yet, inject it
+            // If content script isn't ready yet (e.g. the tab was open before the
+            // extension was installed or reloaded), inject it along with its styles
+            chrome.scripting.insertCSS({
+              target: { tabId: currentTab.id },
+              files: ['styles.css']
+            });
             chrome.scripting.executeScript({
               target: { tabId: currentTab.id },
               files: ['content.js']

@@ -7,7 +7,6 @@
  *    - Exact text matching
  *    - Selector-based targeting
  *    - Partial text matching with phrases
- *    - Keyword matching from descriptions
  *    - Fuzzy matching as a last resort
  * 3. It adds interactive tooltips to highlighted elements with pattern information.
  * 4. It manages user feedback collection directly from the page via the tooltips.
@@ -16,7 +15,13 @@
 
 // Store elements for later highlighting
 let pageElements = new Map();
+// Every indexed element with its full text, used to find the smallest element containing a phrase
+let indexedElements = [];
 let highlightedElements = [];
+
+const NON_HIGHLIGHTABLE_TAGS = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE', 'IFRAME']);
+// Elements with more text than this are page sections, not something worth highlighting
+const MAX_HIGHLIGHT_TEXT_LENGTH = 1500;
 
 // Listen for messages from popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -58,12 +63,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // Function to extract page content
 function extractPageContent() {
   const textContent = document.body.innerText;
-  
-  // Index all visible elements on the page
-  const visibleElements = Array.from(document.querySelectorAll('*'))
+
+  // Start from a clean index on every scan
+  pageElements = new Map();
+  indexedElements = [];
+
+  // Index all visible elements on the page. <html>/<body> (and non-visual tags)
+  // are skipped: they contain all the page text, so they would match every
+  // search and the "highlight" would cover the whole page.
+  const visibleElements = Array.from(document.body.querySelectorAll('*'))
     .filter(el => {
+      if (NON_HIGHLIGHTABLE_TAGS.has(el.tagName) || el instanceof SVGElement) return false;
       const style = window.getComputedStyle(el);
-      return style.display !== 'none' && 
+      return style.display !== 'none' &&
              style.visibility !== 'hidden' && 
              el.offsetWidth > 0 &&
              el.offsetHeight > 0 &&
@@ -78,6 +90,7 @@ function extractPageContent() {
       
       // Store element with its text as key for later lookup
       pageElements.set(elementInfo.text, el);
+      indexedElements.push({ normalized: normalizeText(elementInfo.text), element: el });
       
       // Also store elements with shorter text segments for partial matching
       const textSegments = elementInfo.text.split(/\s+/);
@@ -227,18 +240,24 @@ function highlightDarkPattern(pattern, index) {
 // Find the most appropriate element for a given pattern
 function findElementForPattern(pattern) {
   let targetElement = null;
-  
+
+  // The index is built when the page is scanned. If the page was reloaded since
+  // (results are restored from storage), rebuild it now.
+  if (indexedElements.length === 0) {
+    extractPageContent();
+  }
+
   // Try different approaches to find the element
-  
+
   // 1. Try the exact text first
   if (pattern.text) {
-    targetElement = pageElements.get(pattern.text);
+    targetElement = pageElements.get(pattern.text.trim());
     if (targetElement) {
       console.log('Found element with exact text match');
       return targetElement;
     }
   }
-  
+
   // 2. Try by selector if provided
   if (pattern.selector && pattern.selector !== "N/A") {
     try {
@@ -251,95 +270,93 @@ function findElementForPattern(pattern) {
       console.error('Invalid selector:', pattern.selector);
     }
   }
-  
+
   // 3. Try partial text matching with decreasing specificity
   if (pattern.text) {
-    // Try phrases from the text
-    const words = pattern.text.trim().split(/\s+/);
-    
-    // Try different length word combinations
+    // Whole text first (ignoring case and whitespace differences)
+    const fullText = normalizeText(pattern.text);
+    targetElement = smallestElementContaining(fullText);
+    if (targetElement) {
+      console.log('Found element containing full text');
+      return targetElement;
+    }
+
+    // Then phrases from the text, longest first
+    const words = fullText.split(' ');
     for (let len = Math.min(5, words.length); len >= 2; len--) {
       for (let i = 0; i <= words.length - len; i++) {
         const phrase = words.slice(i, i + len).join(' ');
         if (phrase.length > 5) {
-          targetElement = pageElements.get(phrase);
+          targetElement = smallestElementContaining(phrase);
           if (targetElement) {
-            console.log('Found element with phrase:', phrase);
+            console.log('Found element containing phrase:', phrase);
             return targetElement;
-          }
-          
-          // Try to find an element containing this phrase
-          for (const [key, el] of pageElements.entries()) {
-            if (key.includes(phrase)) {
-              console.log('Found element containing phrase:', phrase);
-              return el;
-            }
           }
         }
       }
     }
-    
+
     // Try individual words (only longer, significant words)
     const significantWords = words.filter(word => word.length > 5);
     for (const word of significantWords) {
-      for (const [key, el] of pageElements.entries()) {
-        if (key.includes(word)) {
-          console.log('Found element containing word:', word);
-          return el;
-        }
+      targetElement = smallestElementContaining(word);
+      if (targetElement) {
+        console.log('Found element containing word:', word);
+        return targetElement;
       }
     }
   }
-  
-  // 4. Try keywords from the description
-  if (pattern.description) {
-    const descWords = pattern.description.trim().split(/\s+/);
-    const descKeywords = descWords.filter(word => word.length > 6);
-    
-    for (const keyword of descKeywords) {
-      // Find elements containing these keywords
-      const elements = document.querySelectorAll('body *');
-      for (const el of elements) {
-        if (el.textContent.includes(keyword)) {
-          console.log('Found element with keyword from description:', keyword);
-          return el;
-        }
-      }
-    }
-  }
-  
-  // 5. Last resort: fuzzy matching
+
+  // 4. Last resort: fuzzy matching - the smallest element sharing the most words with the text
   if (pattern.text) {
-    const text = pattern.text.toLowerCase();
-    // Find elements with greatest text overlap
+    const wordSet = new Set(normalizeText(pattern.text).split(' ').filter(word => word.length > 3));
     let bestMatch = null;
     let bestScore = 0;
-    
-    Array.from(pageElements.entries()).forEach(([key, el]) => {
-      const elementText = key.toLowerCase();
+    let bestLength = Infinity;
+
+    indexedElements.forEach(({ normalized, element }) => {
+      if (normalized.length > MAX_HIGHLIGHT_TEXT_LENGTH) return;
+
       let score = 0;
-      
-      // Calculate simple overlap score
-      const wordSet = new Set(text.split(/\s+/));
-      elementText.split(/\s+/).forEach(word => {
-        if (wordSet.has(word) && word.length > 3) {
+      new Set(normalized.split(' ')).forEach(word => {
+        if (wordSet.has(word)) {
           score += word.length;
         }
       });
-      
-      if (score > bestScore) {
+
+      if (score > bestScore || (score === bestScore && normalized.length < bestLength)) {
         bestScore = score;
-        bestMatch = el;
+        bestLength = normalized.length;
+        bestMatch = element;
       }
     });
-    
+
     if (bestMatch && bestScore > 10) {
       console.log('Found element with fuzzy matching, score:', bestScore);
       return bestMatch;
     }
   }
-  
+
   return null;
+}
+
+// Lowercase and collapse whitespace so AI-quoted text matches page text more reliably
+function normalizeText(text) {
+  return String(text).toLowerCase().replace(/\s+/g, ' ').trim();
+}
+
+// Return the element with the least text that still contains the phrase, so we
+// highlight e.g. the price label rather than the product card or page wrapper.
+function smallestElementContaining(phrase) {
+  let best = null;
+  for (const entry of indexedElements) {
+    if (entry.normalized.length > MAX_HIGHLIGHT_TEXT_LENGTH) continue;
+    if (best && entry.normalized.length >= best.normalized.length) continue;
+    if (entry.normalized.includes(phrase)) {
+      best = entry;
+    }
+  }
+  return best ? best.element : null;
 }
 
 // Function to remove highlight
