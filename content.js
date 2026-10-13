@@ -127,25 +127,32 @@ function highlightDarkPattern(pattern, index) {
     const tooltip = document.createElement('div');
     tooltip.className = 'dark-pattern-tooltip';
     
-    // Tooltip content - now with collapsed description by default
+    // Tooltip content - now with collapsed description by default.
+    // The markup below is static; pattern data comes from the LLM (which reads
+    // untrusted page text), so it is only ever inserted via textContent/dataset.
     tooltip.innerHTML = `
       <div class="tooltip-header">
-        <strong>${pattern.type}</strong>
+        <strong class="tooltip-type"></strong>
         <button class="tooltip-more-btn">More</button>
       </div>
       <div class="tooltip-content hidden">
-        <p>${pattern.description}</p>
+        <p class="tooltip-description"></p>
         <div class="tooltip-feedback">
           <span>Were you aware of this pattern?</span>
           <div class="tooltip-feedback-buttons">
-            <button class="tooltip-thumbs-btn tooltip-thumbs-up" data-index="${index}" data-aware="true" title="Yes, I was aware">👍</button>
-            <button class="tooltip-thumbs-btn tooltip-thumbs-down" data-index="${index}" data-aware="false" title="No, I wasn't aware">👎</button>
+            <button class="tooltip-thumbs-btn tooltip-thumbs-up" data-aware="true" title="Yes, I was aware" aria-label="Yes, I was aware">👍</button>
+            <button class="tooltip-thumbs-btn tooltip-thumbs-down" data-aware="false" title="No, I wasn't aware" aria-label="No, I wasn't aware">👎</button>
           </div>
           <div class="tooltip-feedback-thanks hidden">Thanks for your feedback!</div>
         </div>
       </div>
     `;
-    
+    tooltip.querySelector('.tooltip-type').textContent = String(pattern.type ?? '');
+    tooltip.querySelector('.tooltip-description').textContent = String(pattern.description ?? '');
+    tooltip.querySelectorAll('.tooltip-thumbs-btn').forEach(btn => {
+      btn.dataset.index = index;
+    });
+
     // Add tooltip to the element
     targetElement.appendChild(tooltip);
     
