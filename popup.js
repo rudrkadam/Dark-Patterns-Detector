@@ -55,53 +55,37 @@ document.addEventListener('DOMContentLoaded', () => {
     scanButton.style.display = 'none';
     loadingSpinner.style.display = 'flex';
 
-    // Get the current tab
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const currentTab = tabs[0];
-      currentUrl = currentTab.url;
-
-      // Send message to content script to get page content
-      chrome.tabs.sendMessage(
-        currentTab.id,
-        { action: 'getPageContent' },
-        (response) => {
-          if (chrome.runtime.lastError) {
-            // If content script isn't ready yet (e.g. the tab was open before the
-            // extension was installed or reloaded), inject it along with its styles
-            chrome.scripting.insertCSS({
-              target: { tabId: currentTab.id },
-              files: ['styles.css']
-            });
-            chrome.scripting.executeScript({
-              target: { tabId: currentTab.id },
-              files: ['content.js']
-            }, () => {
-              // Chrome blocks extensions on its own pages (chrome://, the Web Store, etc.)
-              if (chrome.runtime.lastError) {
-                console.error('Could not inject content script:', chrome.runtime.lastError.message);
-                showError("This page can't be scanned. Try a regular website.");
-                return;
-              }
-              // Try again after script is injected
-              setTimeout(() => {
-                chrome.tabs.sendMessage(
-                  currentTab.id,
-                  { action: 'getPageContent' },
-                  (retryResponse) => {
-                    // Reading lastError marks it handled; a missing response is reported by processPageContent
-                    void chrome.runtime.lastError;
-                    processPageContent(retryResponse);
-                  }
-                );
-              }, 200);
-            });
-          } else {
-            processPageContent(response);
-          }
-        }
-      );
-    });
+    // Get page content from the content script, injecting it if needed
+    sendToActiveTab({ action: 'getPageContent' })
+      .then(processPageContent)
+      .catch(error => {
+        console.error('Could not get page content:', error.message);
+        // Chrome blocks extensions on its own pages (chrome://, the Web Store, etc.)
+        showError("This page can't be scanned. Try a regular website.");
+      });
   });
+
+  // The content script is not declared in the manifest (that would run it on
+  // every page the user visits). It is injected into the active tab on demand,
+  // which the activeTab permission allows once the user opens the popup.
+  async function ensureContentScript(tabId) {
+    try {
+      const response = await chrome.tabs.sendMessage(tabId, { action: 'ping' });
+      if (response && response.ready) return;
+    } catch (error) {
+      // Not injected yet - fall through and inject it
+    }
+    await chrome.scripting.insertCSS({ target: { tabId }, files: ['styles.css'] });
+    await chrome.scripting.executeScript({ target: { tabId }, files: ['content.js'] });
+  }
+
+  // Send a message to the content script in the active tab, injecting it first if needed
+  async function sendToActiveTab(message) {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    currentUrl = tab.url;
+    await ensureContentScript(tab.id);
+    return chrome.tabs.sendMessage(tab.id, message);
+  }
 
   // Process page content and send to Gemini API via background script
   function processPageContent(response) {
@@ -219,16 +203,11 @@ document.addEventListener('DOMContentLoaded', () => {
       highlightBtn.addEventListener('click', function () {
         const isActive = this.classList.contains('active');
 
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-          chrome.tabs.sendMessage(
-            tabs[0].id,
-            {
-              action: isActive ? 'removeHighlight' : 'addHighlight',
-              pattern: pattern,
-              index: index
-            }
-          );
-        });
+        sendToActiveTab({
+          action: isActive ? 'removeHighlight' : 'addHighlight',
+          pattern: pattern,
+          index: index
+        }).catch(error => console.error('Highlight failed:', error.message));
 
         this.classList.toggle('active');
         this.textContent = isActive ? 'Highlight' : 'Remove';
@@ -269,15 +248,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const isActive = this.classList.contains('active');
     const highlightBtns = document.querySelectorAll('.highlight-btn');
 
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.tabs.sendMessage(
-        tabs[0].id,
-        {
-          action: isActive ? 'removeAllHighlights' : 'addAllHighlights',
-          patterns: detectedPatterns
-        }
-      );
-    });
+    sendToActiveTab({
+      action: isActive ? 'removeAllHighlights' : 'addAllHighlights',
+      patterns: detectedPatterns
+    }).catch(error => console.error('Highlight all failed:', error.message));
 
     this.classList.toggle('active');
     this.textContent = isActive ? 'Highlight All' : 'Remove All';

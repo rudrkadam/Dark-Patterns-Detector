@@ -13,19 +13,28 @@
  * 5. It handles highlight removal and notification displays for user interactions.
  */
 
-// Store elements for later highlighting
-let pageElements = new Map();
-// Every indexed element with its full text, used to find the smallest element containing a phrase
-let indexedElements = [];
-let highlightedElements = [];
+// This script is injected on demand and may be injected again into the same tab
+// (e.g. after the extension is reloaded), so top-level state uses `var`:
+// re-declaring `let`/`const` would throw and break the scan.
 
-const NON_HIGHLIGHTABLE_TAGS = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE', 'IFRAME']);
+// Store elements for later highlighting
+var pageElements = new Map();
+// Every indexed element with its full text, used to find the smallest element containing a phrase
+var indexedElements = [];
+var highlightedElements = [];
+
+var NON_HIGHLIGHTABLE_TAGS = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE', 'IFRAME']);
 // Elements with more text than this are page sections, not something worth highlighting
-const MAX_HIGHLIGHT_TEXT_LENGTH = 1500;
+var MAX_HIGHLIGHT_TEXT_LENGTH = 1500;
 
 // Listen for messages from popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
+    case 'ping':
+      // Lets the popup check whether this script is already injected
+      sendResponse({ ready: true });
+      break;
+
     case 'getPageContent':
       // Extract page content
       const pageContent = extractPageContent();
