@@ -76,12 +76,22 @@ document.addEventListener('DOMContentLoaded', () => {
               target: { tabId: currentTab.id },
               files: ['content.js']
             }, () => {
+              // Chrome blocks extensions on its own pages (chrome://, the Web Store, etc.)
+              if (chrome.runtime.lastError) {
+                console.error('Could not inject content script:', chrome.runtime.lastError.message);
+                showError("This page can't be scanned. Try a regular website.");
+                return;
+              }
               // Try again after script is injected
               setTimeout(() => {
                 chrome.tabs.sendMessage(
                   currentTab.id,
                   { action: 'getPageContent' },
-                  processPageContent
+                  (retryResponse) => {
+                    // Reading lastError marks it handled; a missing response is reported by processPageContent
+                    void chrome.runtime.lastError;
+                    processPageContent(retryResponse);
+                  }
                 );
               }, 200);
             });
@@ -107,9 +117,11 @@ document.addEventListener('DOMContentLoaded', () => {
         content: response.content
       },
       (result) => {
-        if (chrome.runtime.lastError || result.error) {
-          console.error('Error from background script:', result?.error || chrome.runtime.lastError);
-          showError("Failed to analyze page. Please try again.");
+        // result is undefined if the background script failed to respond
+        if (chrome.runtime.lastError || !result || result.error) {
+          const errorText = result?.error || chrome.runtime.lastError?.message || 'No response';
+          console.error('Error from background script:', errorText);
+          showError(friendlyErrorMessage(errorText));
           return;
         }
 
@@ -139,6 +151,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Clear previous results
     patternsList.innerHTML = '';
+
+    // Reset the Highlight All button (it may be hidden or active from a previous scan)
+    highlightAllButton.style.display = '';
+    highlightAllButton.classList.remove('active');
+    highlightAllButton.textContent = 'Highlight All';
 
     // Update count
     patternCount.textContent = darkPatterns.length;
@@ -244,31 +261,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
     });
-
-    // Highlight All button handler
-    highlightAllButton.addEventListener('click', function () {
-      const isActive = this.classList.contains('active');
-      const highlightBtns = document.querySelectorAll('.highlight-btn');
-
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        chrome.tabs.sendMessage(
-          tabs[0].id,
-          {
-            action: isActive ? 'removeAllHighlights' : 'addAllHighlights',
-            patterns: darkPatterns
-          }
-        );
-      });
-
-      this.classList.toggle('active');
-      this.textContent = isActive ? 'Highlight All' : 'Remove All';
-
-      highlightBtns.forEach(btn => {
-        btn.classList.toggle('active', !isActive);
-        btn.textContent = isActive ? 'Highlight' : 'Remove';
-      });
-    });
   }
+
+  // Highlight All button handler. Registered once (not per displayResults call),
+  // otherwise a second scan adds a second listener and each click toggles twice.
+  highlightAllButton.addEventListener('click', function () {
+    const isActive = this.classList.contains('active');
+    const highlightBtns = document.querySelectorAll('.highlight-btn');
+
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(
+        tabs[0].id,
+        {
+          action: isActive ? 'removeAllHighlights' : 'addAllHighlights',
+          patterns: detectedPatterns
+        }
+      );
+    });
+
+    this.classList.toggle('active');
+    this.textContent = isActive ? 'Highlight All' : 'Remove All';
+
+    highlightBtns.forEach(btn => {
+      btn.classList.toggle('active', !isActive);
+      btn.textContent = isActive ? 'Highlight' : 'Remove';
+    });
+  });
 
   // Function to check if all patterns have received feedback
   function checkAllFeedbackGiven() {
@@ -314,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!isHelpful) {
       // Show error if no option selected
-      showError("Please select an option for how helpful the extension was.");
+      showError("Please select an option for how helpful the extension was.", submitFeedback);
       return;
     }
 
@@ -397,22 +415,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3000);
   }
 
+  // Turn a raw error from the background script into something a user can act on
+  function friendlyErrorMessage(errorText) {
+    const text = String(errorText).toLowerCase();
+    if (text.includes('high demand') || text.includes('overloaded') || text.includes('timeout') || text.includes('aborted')) {
+      return 'The AI service is busy right now. Please try again in a minute.';
+    }
+    if (text.includes('quota') || text.includes('rate limit') || text.includes('resource has been exhausted')) {
+      return 'Scan limit reached. Please try again later.';
+    }
+    if (text.includes('api key')) {
+      return 'The AI service rejected the API key. Check config.js.';
+    }
+    if (text.includes('failed to fetch') || text.includes('network')) {
+      return 'Could not reach the AI service. Check your internet connection.';
+    }
+    return 'Failed to analyze page. Please try again.';
+  }
+
   // Show error message
-  function showError(message) {
+  // anchor: element the message is shown after (must be visible, e.g. the
+  // submit button when validating the feedback form)
+  function showError(message, anchor = scanButton) {
     loadingSpinner.style.display = 'none';
     scanButton.style.display = 'block';
+
+    // Replace any error that's still showing instead of stacking them
+    document.querySelectorAll('.error-message').forEach(el => el.remove());
 
     // Create an error message element
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
+    errorDiv.setAttribute('role', 'alert');
     errorDiv.textContent = message;
 
-    // Insert after scan button
-    scanButton.insertAdjacentElement('afterend', errorDiv);
+    anchor.insertAdjacentElement('afterend', errorDiv);
 
-    // Remove after 3 seconds
+    // Remove after 6 seconds
     setTimeout(() => {
       errorDiv.remove();
-    }, 3000);
+    }, 6000);
   }
 }); 
