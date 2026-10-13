@@ -8,6 +8,13 @@
  * 4. It handles storage of user feedback data received from the content script.
  */
 
+// Gemini models to try, in order. If a model is overloaded (503), rate limited
+// (429), retired (404) or times out, the next one is tried.
+// gemini-2.0-flash was retired by Google; update this list as models change.
+const GEMINI_MODELS = ['gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-flash-lite-latest'];
+const GEMINI_TIMEOUT_MS = 45000;
+const RETRYABLE_STATUSES = [404, 429, 500, 503];
+
 // Configuration variable to store API keys
 let CONFIG = {
   GEMINI_API_KEY: null
@@ -117,32 +124,7 @@ Format your response as a JSON array like this:
 Here's the webpage content to analyze:
 ${content}`;
 
-    console.log('Sending request to Gemini API');
-    
-    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + CONFIG.GEMINI_API_KEY, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{
-            text: prompt
-          }]
-        }],
-        generationConfig: {
-          temperature: 0.1,
-          maxOutputTokens: 4096
-        }
-      })
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error?.message || 'Failed to analyze content');
-    }
-
-    const data = await response.json();
+    const data = await callGemini(prompt);
     console.log('Received response from Gemini API');
 
     // Parse the response to extract dark patterns
@@ -161,6 +143,59 @@ ${content}`;
     console.error('Error analyzing with Gemini:', error);
     throw error;
   }
+}
+
+// Send the prompt to Gemini, falling back through GEMINI_MODELS on transient failures
+async function callGemini(prompt) {
+  let lastError = null;
+
+  for (const model of GEMINI_MODELS) {
+    console.log('Sending request to Gemini API, model:', model);
+
+    let response;
+    try {
+      response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Send the key in a header rather than the URL so it doesn't end up in logs
+          'x-goog-api-key': CONFIG.GEMINI_API_KEY
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: prompt
+            }]
+          }],
+          generationConfig: {
+            temperature: 0.1,
+            maxOutputTokens: 4096
+          }
+        }),
+        signal: AbortSignal.timeout(GEMINI_TIMEOUT_MS)
+      });
+    } catch (error) {
+      // Network error or timeout - try the next model
+      console.warn(`Gemini request to ${model} failed:`, error.message);
+      lastError = error;
+      continue;
+    }
+
+    if (response.ok) {
+      return response.json();
+    }
+
+    const errorData = await response.json().catch(() => ({}));
+    lastError = new Error(errorData.error?.message || 'Failed to analyze content');
+
+    if (!RETRYABLE_STATUSES.includes(response.status)) {
+      // e.g. invalid API key or bad request - another model won't help
+      throw lastError;
+    }
+    console.warn(`Gemini model ${model} unavailable (HTTP ${response.status}), trying next model`);
+  }
+
+  throw lastError;
 }
 
 function parseGeminiResponse(response) {
