@@ -120,6 +120,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Display results
         displayResults(result.darkPatterns);
+
+        if (result.truncated) {
+          showNotice('This page is very long, so only its first part was analysed.');
+        }
       }
     );
   }
@@ -135,6 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Clear previous results
     patternsList.innerHTML = '';
+    document.querySelectorAll('.results-notice').forEach(el => el.remove());
 
     // Reset the Highlight All button (it may be hidden or active from a previous scan)
     highlightAllButton.style.display = '';
@@ -174,6 +179,16 @@ document.addEventListener('DOMContentLoaded', () => {
       const patternDescription = document.createElement('div');
       patternDescription.className = 'pattern-description';
       patternDescription.textContent = pattern.description;
+
+      // How many places on the page show this pattern (results saved by
+      // older versions have no quotes list)
+      const occurrenceCount = Array.isArray(pattern.quotes) ? pattern.quotes.length : 1;
+      if (occurrenceCount > 1) {
+        const occurrences = document.createElement('div');
+        occurrences.className = 'pattern-occurrences';
+        occurrences.textContent = `Found in ${occurrenceCount} places on this page`;
+        patternDescription.appendChild(occurrences);
+      }
 
       // Add feedback section with thumbs up/down
       const patternFeedback = document.createElement('div');
@@ -398,6 +413,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (text.includes('quota') || text.includes('rate limit') || text.includes('resource has been exhausted')) {
       return 'Scan limit reached. Please try again later.';
     }
+    if (text.includes('cut off')) {
+      return 'This page has too much to analyse in one go. Please try again.';
+    }
+    if (text.includes('declined to analyse')) {
+      return 'The AI service declined to analyse this page.';
+    }
     if (text.includes('api key')) {
       return 'The AI service rejected the API key. Check config.js.';
     }
@@ -405,6 +426,15 @@ document.addEventListener('DOMContentLoaded', () => {
       return 'Could not reach the AI service. Check your internet connection.';
     }
     return 'Failed to analyze page. Please try again.';
+  }
+
+  // Show an informational note at the top of the results
+  function showNotice(message) {
+    const notice = document.createElement('div');
+    notice.className = 'results-notice';
+    notice.setAttribute('role', 'status');
+    notice.textContent = message;
+    patternsList.insertAdjacentElement('beforebegin', notice);
   }
 
   // Show error message

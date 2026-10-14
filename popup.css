@@ -458,3 +458,19 @@ h2 {
   background-color: #dfe6e9;
   color: #2d3436;
 } 
+/* Note shown above results, e.g. when a long page was only partly analysed */
+.results-notice {
+  margin: 0 0 10px;
+  padding: 8px 12px;
+  background-color: #fff8e1;
+  color: #7a5b00;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.pattern-occurrences {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #0984e3;
+}
