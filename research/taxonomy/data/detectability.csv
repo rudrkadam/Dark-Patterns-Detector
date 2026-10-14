@@ -17,3 +17,4 @@ Hard to cancel,0.0,Needs walking through a multi-step cancellation flow
 Obstruction,0.0,Needs walking through a multi-step task flow
 Nagging,0.0,Needs observing repeated prompts over time
 Addictive design,0.0,Needs observing behaviour over time
+False discount,1.0,Reference prices and discount percentages are visible text; whether the reference price is inflated cannot be verified from the page

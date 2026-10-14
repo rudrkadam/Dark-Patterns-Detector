@@ -23,3 +23,8 @@ icpen_sweep2024,Forced action,Payment details required for a free trial,0.664,1,
 icpen_sweep2024,Visual interference,False hierarchy,0.383,1,Share of traders whose subscriptions do not start as a free trial.
 icpen_sweep2024,Preselection,Subscription option pre-selected,0.225,1,Share of traders selling both subscription and non-subscription products.
 icpen_sweep2024,Fake social proof,Activity notifications / social proof,0.215,1,Share of traders selling both subscription and non-subscription products.
+kulkarni2026,Fake urgency,Urgency patterns,80,351,"Kulkarni et al., Unmasking Dark Patterns: 351 detections on 10 sites incl. Flipkart, Myntra, Amazon.in (user study, 40 participants)"
+kulkarni2026,Hidden costs,Cost-related patterns,60,351,
+kulkarni2026,False discount,Discount Anchoring,35,351,Highest Pattern Vulnerability Index in the study (PVI 25.0; 71.4% of users unaware)
+kulkarni2026,Visual interference,Interference patterns,28,351,
+kulkarni2026,Sneaking,Add-On Creep,3,351,100% of users unaware
