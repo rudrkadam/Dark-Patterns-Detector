@@ -457,7 +457,8 @@ h2 {
 .download-feedback-btn:hover {
   background-color: #dfe6e9;
   color: #2d3436;
-} 
+}
+
 /* Note shown above results, e.g. when a long page was only partly analysed */
 .results-notice {
   margin: 0 0 10px;
@@ -473,4 +474,24 @@ h2 {
   font-size: 12px;
   font-weight: 600;
   color: #0984e3;
+}
+
+/* Link to the docs page listing detected types and the research behind them */
+.what-we-detect-btn {
+  display: block;
+  margin: 10px 0;
+  padding: 8px 12px;
+  border: 1px solid #0984e3;
+  border-radius: 6px;
+  color: #0984e3;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+}
+
+.what-we-detect-btn:hover,
+.what-we-detect-btn:focus-visible {
+  background-color: #0984e3;
+  color: #fff;
 }

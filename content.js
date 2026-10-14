@@ -35,7 +35,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       sendResponse({ ready: true });
       break;
 
-    case 'getPageContent':
+    case 'getPageContent': {
       // Extract page content
       const pageContent = extractPageContent();
       sendResponse({
@@ -43,6 +43,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         pageUrl: window.location.href
       });
       break;
+    }
       
     case 'addHighlight':
       console.log('Adding highlight for pattern:', request.pattern);
@@ -275,7 +276,7 @@ function findElementForPattern(pattern) {
         console.log('Found element with selector:', pattern.selector);
         return targetElement;
       }
-    } catch (error) {
+    } catch {
       console.error('Invalid selector:', pattern.selector);
     }
   }

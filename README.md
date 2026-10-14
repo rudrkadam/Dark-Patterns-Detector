@@ -14,6 +14,8 @@ Learn more about dark patterns on [Deceptive Design](https://www.deceptive.desig
 - **Informative Tooltips**: View descriptions of each dark pattern and how it affects users
 - **Educational Resource**: Links to more information about dark patterns
 
+**What we detect and why:** see [docs/DARK_PATTERNS.md](docs/DARK_PATTERNS.md) for the 19 types the extension looks for, with examples. The research behind the selection is in [research/taxonomy](research/taxonomy/README.md).
+
 ## 🔧 Installation
 
 ### 1. Development Mode 💻
@@ -47,26 +49,25 @@ This extension uses semantic versioning (MAJOR.MINOR.PATCH):
 - **MINOR**: New features in a backward-compatible manner
 - **PATCH**: Bug fixes in a backward-compatible manner
 
-### 1. Version Scripts 📜
+### 1. Development Scripts 📜
 
-Two scripts are provided to help manage versions:
+Install the development tools once with `npm install`. Then:
 
-1. **version-bump.js**: Updates the version in manifest.json
-   ```
-   node version-bump.js [patch|minor|major]
-   ```
+| Command | What it does |
+|---|---|
+| `npm run check` | Runs ESLint and the test suite (`npm run lint` and `npm test` separately) |
+| `npm run build` | Packages the extension as `dist/dark-patterns-detector-v<version>.zip`. Files are discovered from what the extension references, and the build fails if one is missing |
+| `npm run bump-patch`, `bump-minor`, `bump-major` | Updates the version in `manifest.json` |
 
-2. **create-backup.js**: Creates a backup ZIP of the current version
-   ```
-   npm install archiver  # First-time setup
-   node create-backup.js [custom-name]
-   ```
+GitHub Actions runs lint, tests and a build on every push and pull request (`.github/workflows/ci.yml`). The packaged zip is attached to each run.
+
+> ⚠️ The build includes `config.js`, so anyone with the zip can read the API key. Don't publish it to the Chrome Web Store until the key is moved to a backend.
 
 ### 2. Rollback Procedure 🔙
 
 If you need to roll back to a previous version:
 
-1. Unzip the backup file of the version you want to restore
+1. Check out the release's git tag (or download its zip from the GitHub Actions run) and run `npm run build`
 2. Load the unpacked extension in Chrome developer mode
 3. Test thoroughly to ensure it works as expected
 

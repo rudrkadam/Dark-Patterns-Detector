@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const response = await chrome.tabs.sendMessage(tabId, { action: 'ping' });
       if (response && response.ready) return;
-    } catch (error) {
+    } catch {
       // Not injected yet - fall through and inject it
     }
     await chrome.scripting.insertCSS({ target: { tabId }, files: ['styles.css'] });

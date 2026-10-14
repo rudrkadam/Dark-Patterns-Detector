@@ -250,7 +250,7 @@ function parseGeminiResponse(response) {
     // responseMimeType should give bare JSON; strip code fences just in case
     const parsed = JSON.parse(text.replace(/^\s*```(?:json)?\s*|\s*```\s*$/g, ''));
     return Array.isArray(parsed.patterns) ? parsed.patterns : [];
-  } catch (error) {
+  } catch {
     if (candidate.finishReason === 'MAX_TOKENS') {
       throw new Error('The AI response was cut off because this page has too many findings.');
     }

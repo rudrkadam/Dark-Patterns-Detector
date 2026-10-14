@@ -67,7 +67,7 @@ try {
   console.log('Next steps:');
   console.log('1. Update CHANGELOG.md with your changes');
   console.log('2. Test the extension thoroughly');
-  console.log(`3. Create a backup copy of this version (e.g., DarkPatternsDetector-v${newVersion}.zip)`);
+  console.log(`3. Build the package: npm run build (creates dist/dark-patterns-detector-v${newVersion}.zip)`);
   
 } catch (error) {
   console.error(`Error: ${error.message}`);
