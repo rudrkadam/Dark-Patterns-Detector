@@ -1,0 +1,25 @@
+source,type,source_label,count,denominator,note
+mathur2019,Fake scarcity,Low-stock Message,632,1818,
+mathur2019,Fake scarcity,High-demand Message,47,1818,
+mathur2019,Fake urgency,Countdown Timer,393,1818,
+mathur2019,Fake urgency,Limited-time Message,88,1818,
+mathur2019,Fake social proof,Activity Notification,313,1818,
+mathur2019,Fake social proof,Testimonials of Uncertain Origin,12,1818,
+mathur2019,Confirmshaming,Confirmshaming,169,1818,
+mathur2019,Preselection,Pressured Selling,67,1818,"Mathur: pre-selecting or pressuring users to accept more expensive variations. Ambiguous between Preselection and Visual interference; the sensitivity analysis also tries the alternative mapping."
+mathur2019,Hard to cancel,Hard to Cancel,31,1818,
+mathur2019,Visual interference,Visual Interference,25,1818,
+mathur2019,Hidden subscription,Hidden Subscription,14,1818,
+mathur2019,Trick wording,Trick Questions,9,1818,
+mathur2019,Sneaking,Sneak into Basket,7,1818,
+mathur2019,Forced action,Forced Enrollment,6,1818,
+mathur2019,Hidden costs,Hidden Costs,5,1818,
+eu_cpc_sweep2023,Sneaking,Hidden information,70,399,Websites hiding important information or making it less visible (e.g. delivery costs).
+eu_cpc_sweep2023,Visual interference,Interfaces directing consumers to choices,54,399,"Steering via visual design or choice of language. Mapped to Visual interference (also overlaps Trick wording)."
+eu_cpc_sweep2023,Fake urgency,Fake countdown timers,42,399,
+eu_cpc_sweep2023,Hidden subscription,Hiding information to push a subscription,23,399,
+icpen_sweep2024,Hidden subscription,Auto-renewal cannot be turned off in purchase flow,0.81,1,Share of traders selling auto-renewing subscriptions.
+icpen_sweep2024,Forced action,Payment details required for a free trial,0.664,1,'At least' 66.4% of cases investigated.
+icpen_sweep2024,Visual interference,False hierarchy,0.383,1,Share of traders whose subscriptions do not start as a free trial.
+icpen_sweep2024,Preselection,Subscription option pre-selected,0.225,1,Share of traders selling both subscription and non-subscription products.
+icpen_sweep2024,Fake social proof,Activity notifications / social proof,0.215,1,Share of traders selling both subscription and non-subscription products.

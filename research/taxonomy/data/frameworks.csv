@@ -1,0 +1,19 @@
+type,oecd2022,ftc2022,india_ccpa2023,mapping_note
+Sneaking,1,1,1,OECD sneaking; FTC sneak-into-basket and hidden information; CCPA basket sneaking
+Forced action,1,1,1,OECD forced action; FTC forced registration or enrollment; CCPA forced action
+Hard to cancel,1,1,1,OECD obstruction (cancellation example); FTC roadblocks to cancellation; CCPA subscription trap
+Preselection,1,1,0,OECD interface interference (preselection); FTC preselection; not a named CCPA pattern
+Obstruction,1,1,0,OECD obstruction; FTC immortal accounts; not a named CCPA pattern
+Hidden subscription,1,1,1,OECD sneaking (subscription traps); FTC hidden subscription or forced continuity; CCPA SaaS billing
+Hidden costs,1,1,1,OECD sneaking (drip pricing); FTC hidden costs and drip pricing; CCPA drip pricing
+Trick wording,1,1,1,OECD interface interference; FTC trick questions; CCPA trick question
+Visual interference,1,1,1,OECD interface interference; FTC misdirection and false hierarchy; CCPA interface interference
+Fake social proof,1,1,1,OECD social proof; FTC false activity messages and deceptive testimonials; CCPA false urgency covers false popularity
+Fake urgency,1,1,1,OECD urgency; FTC baseless countdown timer and false limited time message; CCPA false urgency
+Nagging,1,1,1,OECD nagging; FTC nagging; CCPA nagging
+Fake scarcity,1,1,1,OECD urgency (quantity limits); FTC false low stock and high demand messages; CCPA false urgency covers scarcity
+Disguised ads,1,1,1,OECD interface interference; FTC disguised ads; CCPA disguised advertisement
+Confirmshaming,1,1,1,OECD interface interference (emotive language); FTC confirm shaming; CCPA confirm shaming
+Comparison prevention,1,1,0,OECD obstruction; FTC price comparison prevention; not a named CCPA pattern
+Addictive design,0,1,0,FTC auto-play and grinding; not in OECD categories or CCPA list
+Currency confusion,0,1,0,FTC intermediate currency; not in OECD categories or CCPA list

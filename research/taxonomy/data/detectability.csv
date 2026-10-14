@@ -1,0 +1,19 @@
+type,detectability,rationale
+Fake urgency,1.0,Countdowns and deadline wording appear as text on the page
+Fake scarcity,1.0,Low-stock and high-demand messages appear as text on the page
+Fake social proof,1.0,Activity messages and testimonials appear as text on the page
+Confirmshaming,1.0,Shaming opt-out wording appears as button or link text
+Trick wording,1.0,Confusing or double-negative wording is visible as text
+Preselection,0.75,Needs checkbox and radio state from the DOM in addition to text
+Hidden costs,0.5,Only visible when the scanned page is the cart or checkout
+Sneaking,0.5,Only visible when the scanned page is the cart or checkout
+Hidden subscription,0.5,Renewal terms are often in fine print on the same page; may need the next step
+Disguised ads,0.5,Sponsored labels are text but disguise often depends on layout
+Forced action,0.5,'Create an account to continue' is visible text; other forms need a flow
+Currency confusion,0.5,Virtual currency prices are text; judging the obscured cost needs context
+Visual interference,0.25,Needs rendered visual properties (contrast and size) not page text
+Comparison prevention,0.25,Needs comparing several products or pages
+Hard to cancel,0.0,Needs walking through a multi-step cancellation flow
+Obstruction,0.0,Needs walking through a multi-step task flow
+Nagging,0.0,Needs observing repeated prompts over time
+Addictive design,0.0,Needs observing behaviour over time

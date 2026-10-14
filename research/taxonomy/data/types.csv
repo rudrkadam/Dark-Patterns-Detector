@@ -1,0 +1,19 @@
+type,definition,deceptive_design_laws,deceptive_design_enforcements
+Sneaking,"The user is drawn into a transaction on false pretences, because pertinent information is hidden or delayed from being presented to them.",33,60
+Forced action,"The user wants to do something, but they are required to do something else undesirable in return.",41,59
+Hard to cancel,"The user finds it easy to sign up or subscribe, but when they want to cancel they find it very hard.",46,23
+Preselection,"The user is presented with a default option that has already been selected for them, in order to influence their decision-making.",22,14
+Obstruction,"The user is faced with barriers or hurdles, making it hard for them to complete their task or access information.",14,12
+Hidden subscription,"The user is unknowingly enrolled in a recurring subscription or payment plan without clear disclosure or their explicit consent.",22,11
+Hidden costs,"The user is enticed with a low advertised price. After investing time and effort, they discover unexpected fees and charges when they reach the checkout.",17,10
+Trick wording,"The user is misled into taking an action, due to the presentation of confusing or misleading language.",23,9
+Visual interference,"The user expects to see information presented in a clear and predictable way on the page, but it is hidden, obscured or disguised.",13,9
+Fake social proof,"The user is misled into believing a product is more popular or credible than it really is, because they were shown fake reviews, testimonials, or activity messages.",8,7
+Fake urgency,"The user is pressured into completing an action because they are presented with a fake time limitation.",8,4
+Nagging,"The user tries to do something, but they are persistently interrupted by requests to do something else that may not be in their best interests.",10,3
+Fake scarcity,"The user is pressured into completing an action because they are presented with a fake indication of limited supply or popularity.",4,1
+Disguised ads,"The user mistakenly believes they are clicking on an interface element or native content, but it's actually a disguised advertisement.",3,1
+Confirmshaming,"The user is emotionally manipulated into doing something that they would not otherwise have done.",2,1
+Comparison prevention,"The user struggles to compare products because features and prices are combined in a complex manner, or because essential information is hard to find.",1,1
+Addictive design,"The user interacts with the product excessively, because its design exploits psychological vulnerabilities to foster compulsive behaviour.",0,0
+Currency confusion,"The user is misled about how much they are really spending, because real money is converted into a virtual currency that obscures the true cost.",0,0
